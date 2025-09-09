@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Spaces in {{ property.name }}</h2>
+    <a href="{{ url_for('inventory') }}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back to Properties
+    </a>
+</div>
+
+<div class="alert alert-light">
+    <strong>Property:</strong> {{ property.name }}<br>
+    <strong>Address:</strong> {{ property.address }}
+</div>
+
+{% if spaces %}
+<div class="row">
+    {% for space in spaces %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-door-open text-primary"></i> {{ space.name }}
+                </h5>
+                {% if space.description %}
+                <p class="card-text">{{ space.description }}</p>
+                {% endif %}
+                <div class="d-flex gap-2">
+                    <a href="{{ url_for('space_items', space_id=space.id) }}" 
+                       class="btn btn-primary btn-sm">
+                        <i class="fas fa-boxes"></i> View Items
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center">
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i> No spaces found for this property.
+    </div>
+</div>
+{% endif %}
+{% endblock %}

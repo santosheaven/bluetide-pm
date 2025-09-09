@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Inventory Items in {{ space.name }}</h2>
+    <a href="{{ url_for('property_spaces', property_id=space.property_id) }}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back to Spaces
+    </a>
+</div>
+
+<div class="alert alert-light">
+    <strong>Space:</strong> {{ space.name }}<br>
+    {% if space.description %}
+    <strong>Description:</strong> {{ space.description }}
+    {% endif %}
+</div>
+
+{% if items %}
+<div class="row">
+    {% for item in items %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            {% if item.photo_path %}
+            <img src="{{ url_for('static', filename='uploads/' + item.photo_path) }}" 
+                 class="card-img-top" style="height: 200px; object-fit: cover;" 
+                 alt="{{ item.name }}">
+            {% else %}
+            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" 
+                 style="height: 200px;">
+                <i class="fas fa-image fa-3x text-muted"></i>
+            </div>
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ item.name }}</h5>
+                {% if item.description %}
+                <p class="card-text">{{ item.description }}</p>
+                {% endif %}
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="badge 
+                        {% if item.condition == 'Excellent' %}bg-success{% endif %}
+                        {% if item.condition == 'Good' %}bg-primary{% endif %}
+                        {% if item.condition == 'Fair' %}bg-warning{% endif %}
+                        {% if item.condition == 'Poor' %}bg-danger{% endif %}">
+                        {{ item.condition }}
+                    </span>
+                    <small class="text-muted">{{ item.created_at.strftime('%m/%d/%Y') }}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center">
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i> No inventory items found for this space.
+    </div>
+</div>
+{% endif %}
+{% endblock %}
