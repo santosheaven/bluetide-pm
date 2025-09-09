@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4><i class="fas fa-clipboard-list"></i> Request Service: {{ service.name }}</h4>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('submit_service_request') }}" method="POST">
+                    <input type="hidden" name="service_id" value="{{ service.id }}">
+                    
+                    <div class="mb-3">
+                        <label for="property_id" class="form-label">Property</label>
+                        <select class="form-select" id="property_id" name="property_id" required>
+                            <option value="">Select a property...</option>
+                            {% for property in properties %}
+                            <option value="{{ property.id }}">{{ property.name }} - {{ property.address }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="priority" class="form-label">Priority</label>
+                        <select class="form-select" id="priority" name="priority">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="4" 
+                                  placeholder="Please provide details about the service you need..."></textarea>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <strong>Service Details:</strong><br>
+                        <strong>Category:</strong> {{ service.category }}<br>
+                        <strong>Description:</strong> {{ service.description }}
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Submit Request
+                        </button>
+                        <a href="{{ url_for('services') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to Services
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
